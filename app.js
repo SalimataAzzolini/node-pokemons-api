@@ -1,23 +1,23 @@
 const express = require('express');
-const morgan = require('morgan');
+// const morgan = require('morgan');
 const favicon = require('serve-favicon');
 const bodyParser = require('body-parser');
 const sequelize = require('./src/db/sequelize');
 
 
 const app = express();
-const port = 3000;
+const port = process.env.PORT || 3000;
 
 //Déclaration des middlewares
 app
    .use(favicon(__dirname + '/favicon.ico')) 
-   .use(morgan('dev')) // logger pour afficher les requêtes entrantes
+   // .use(morgan('dev')) // logger pour afficher les requêtes entrantes
    .use(bodyParser.json()) //ici on parse toutes les données entrantes dans notre api rest pour les avoir en JSON
 
 
 sequelize.initDb()//on initialise la base de données
 
-
+app.get('/', (req, res) => res.json({ message: 'Hello World from Sali!' })); 
 //Import des routes api
 require('./src/routes/findAllPokemons')(app); //on passe l'objet app à notre route pour pouvoir utiliser app.get
 require('./src/routes/findPokemonByPk')(app);
