@@ -1,6 +1,8 @@
-const { Sequelize, DataTypes } = require('sequelize')
-const PokemonModel = require('../models/pokemon')
-const pokemons = require('./mock-pokemon')
+const { Sequelize, DataTypes } = require('sequelize');
+const bcrypt = require('bcrypt');
+const PokemonModel = require('../models/pokemon');
+const UserModel = require('../models/user');
+const pokemons = require('./mock-pokemon');
   
 
 const sequelize = new Sequelize(
@@ -20,23 +22,34 @@ const sequelize = new Sequelize(
 
   
 const Pokemon = PokemonModel(sequelize, DataTypes) //on passe l'objet sequelize et DataTypes à notre model PokemonModel pour créer le model Pokemon
-  
+const User = UserModel(sequelize, DataTypes); //Initialisation du model User au niveau de sequelize
+
 const initDb = () => {
-  return sequelize.sync({force: true}) // force: true pour supprimer la table à chaque fois
-    .then(_ => {
-        pokemons.map(pokemon => {
-        Pokemon.create({
-            name: pokemon.name,
-            hp: pokemon.hp,
-            cp: pokemon.cp,
-            picture: pokemon.picture,
-            types: pokemon.types
-        }).then(pokemon => console.log(pokemon.toJSON()))
+
+    return sequelize.sync({force: true}) // force: true, on supprime la table si elle existe déjà
+        .then(_ => {
+            pokemons.map(pokemon => {
+            Pokemon.create({
+                name: pokemon.name,
+                hp: pokemon.hp,
+                cp: pokemon.cp,
+                picture: pokemon.picture,
+                types: pokemon.types
+            }).then(pokemon => console.log(pokemon.toJSON()))
+            })
+            
+            bcrypt.hash('pikachu', 10) //on hash le mot de passe avec un salt de 10
+            .then(hash => {
+                User.create({ //on charge un utilisateur en base
+                    username: 'pikachu',
+                    password: hash,
+                }).then(user => console.log(user.toJSON()))
+            })
+
+            console.log('La base de donnée a bien été initialisée !')
         })
-        console.log('La base de donnée a bien été initialisée !')
-  })
 }
   
 module.exports = { 
-  initDb, Pokemon
+  initDb, Pokemon, User
 }
