@@ -1,8 +1,9 @@
-const { Pokemon } = require('../db/sequelize')
+const { Pokemon } = require('../db/sequelize');
 const { Op } = require('sequelize');
+const auth = require('../auth/auth');
   
 module.exports = (app) => {
-  app.get('/api/pokemons', (req, res) => {
+  app.get('/api/pokemons', auth, (req, res) => { //ici on passe notre middleware auth en deuxième argument de notre route pour sécuriser l'accès à la ressource
     if(req.query.name) {
 
         const name = req.query.name;
