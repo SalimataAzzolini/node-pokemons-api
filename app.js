@@ -19,7 +19,7 @@ sequelize.initDb()//on initialise la base de données
 
 app.get('/', (req, res) => res.json({ message: 'Hello World from Sali!' })); 
 //Import des routes api
-require('./src/routes/findAllPokemons')(app); //on passe l'objet app à notre route pour pouvoir utiliser app.get
+require('./src/routes/findAllPokemons')(app);
 require('./src/routes/findPokemonByPk')(app);
 require('./src/routes/createPokemon')(app);
 require('./src/routes/updatePokemon')(app);
@@ -27,8 +27,8 @@ require('./src/routes/deletePokemon')(app);
 require('./src/routes/login')(app);
 
 
-//Ajout gestion erreur 404
-app.use(({res}) => { //ici on utilise le middleware pour gérer les erreurs 404
+
+app.use(({res}) => { 
    const message =  'Impossible de trouver la ressource demandée ! Essayez une autre url';
    res.status(404).json({message});
 })

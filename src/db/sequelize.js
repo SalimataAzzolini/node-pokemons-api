@@ -3,30 +3,49 @@ const bcrypt = require('bcrypt');
 const PokemonModel = require('../models/pokemon');
 const UserModel = require('../models/user');
 const pokemons = require('./mock-pokemon');
-  
 
-const sequelize = new Sequelize(
-    'pokedex', 
-    'root',    
-    'root',    
-    {
-        host: '127.0.0.1',    // Adresse IP du serveur
-        port: 8889,          // Port de la base de données
-        dialect: 'mariadb', // Dialecte utilisé
-        dialectOptions: {
-            timezone: 'Etc/GMT-2', // heure française
-        },
-        logging: false, // désactive les logs
-    }
+
+let sequelize;
+
+if (process.env.NODE_ENV === 'production'){
+    sequelize = new Sequelize(
+        'q97lpqnhwumoly4u',
+        'cijwxjbmdxl5qapn',
+        'djr99ym7snhzpldb',
+        {
+            host: 'eporqep6b4b8ql12.chr7pe7iynqr.eu-west-1.rds.amazonaws.com',
+            port: 3306,         
+            dialect: 'mariadb', 
+            dialectOptions: {
+                timezone: 'Etc/GMT-2', 
+            },
+            logging: true
+        }
+        )
+} else{
+
+    sequelize = new Sequelize(
+        'pokedex', 
+        'root',    
+        'root',    
+        {
+            host: '127.0.0.1',
+            port: 8889,        
+            dialect: 'mariadb',
+            dialectOptions: {
+                timezone: 'Etc/GMT-2', 
+            },
+            logging: false, 
+        }
 );
-
+}
   
-const Pokemon = PokemonModel(sequelize, DataTypes) //on passe l'objet sequelize et DataTypes à notre model PokemonModel pour créer le model Pokemon
-const User = UserModel(sequelize, DataTypes); //Initialisation du model User au niveau de sequelize
+const Pokemon = PokemonModel(sequelize, DataTypes) 
+const User = UserModel(sequelize, DataTypes); 
 
 const initDb = () => {
 
-    return sequelize.sync({force: true}) // force: true, on supprime la table si elle existe déjà
+    return sequelize.sync()
         .then(_ => {
             pokemons.map(pokemon => {
             Pokemon.create({
@@ -38,9 +57,9 @@ const initDb = () => {
             }).then(pokemon => console.log(pokemon.toJSON()))
             })
             
-            bcrypt.hash('pikachu', 10) //on hash le mot de passe avec un salt de 10
+            bcrypt.hash('pikachu', 10) 
             .then(hash => {
-                User.create({ //on charge un utilisateur en base
+                User.create({
                     username: 'pikachu',
                     password: hash,
                 }).then(user => console.log(user.toJSON()))
