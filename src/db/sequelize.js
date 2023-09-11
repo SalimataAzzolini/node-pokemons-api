@@ -21,23 +21,7 @@ if (process.env.NODE_ENV === 'production'){
             },
             logging: true
         }
-        )
-} else{
-
-    sequelize = new Sequelize(
-        'pokedex', 
-        'root',    
-        'root',    
-        {
-            host: '127.0.0.1',
-            port: 8889,        
-            dialect: 'mariadb',
-            dialectOptions: {
-                timezone: 'Etc/GMT-2', 
-            },
-            logging: false, 
-        }
-);
+        );
 }
   
 const Pokemon = PokemonModel(sequelize, DataTypes) 
