@@ -45,7 +45,7 @@ const User = UserModel(sequelize, DataTypes);
 
 const initDb = () => {
 
-    return sequelize.sync({ force: true }) // force: true permet de recréer les tables à chaque lancement de l'application
+    return sequelize.sync()
         .then(_ => {
             pokemons.map(pokemon => {
             Pokemon.create({

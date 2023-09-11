@@ -21,7 +21,7 @@ module.exports = (app) => {
                             return res.json({ message, data: user })
                         }
 
-                        // On génère le token JWT
+                
                         const token = jwt.sign(
                             { userId: user.id },
                             privateKey,

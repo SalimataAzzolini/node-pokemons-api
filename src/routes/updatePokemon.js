@@ -11,8 +11,8 @@ module.exports = (app) => {
       where: { id: id }
     })
     .then(_ => {
-        return Pokemon.findByPk(id).then(pokemon => { //ici avec return, on retourne la promesse de la fonction findByPk et si c'est pas bon on passe à la suite avec le catch
-          if(!pokemon) {
+        return Pokemon.findByPk(id).then(pokemon => { 
+          if (!pokemon) {
               const message = `Le pokémon demandé n'existe pas. Réessayez avec un autre identifiant.`
               return res.status(404).json({message})
           }
@@ -22,7 +22,7 @@ module.exports = (app) => {
     })
     .catch(error => {
       if (error instanceof ValidationError) {
-        return res.status(400).json({ message: error.message, data: error }) //error.message contient le message d'erreur de la validation mis dans le model
+        return res.status(400).json({ message: error.message, data: error }) 
       }
       if(error instanceof Sequelize.UniqueConstraintError) {
         return res.status(400).json({ message: error.message, data: error })

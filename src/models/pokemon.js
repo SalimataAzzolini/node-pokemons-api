@@ -1,6 +1,6 @@
 const validTypes = ['Plante', 'Feu', 'Eau', 'Insecte', 'Normal', 'Electrik', 'Poison', 'Fée', 'Vol', 'Combat', 'Psy'];
 
-module.exports = (sequelize, DataTypes) => { //Ici sequelize est l'objet de connexion à la base de données, et DataTypes est un objet qui contient les types de données
+module.exports = (sequelize, DataTypes) => {
     return sequelize.define('Pokemon', {
       id: {
         type: DataTypes.INTEGER,

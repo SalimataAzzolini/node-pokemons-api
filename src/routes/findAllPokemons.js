@@ -3,7 +3,7 @@ const { Op } = require('sequelize');
 const auth = require('../auth/auth');
   
 module.exports = (app) => {
-  app.get('/api/pokemons', auth, (req, res) => { //ici on passe notre middleware auth en deuxième argument de notre route pour sécuriser l'accès à la ressource
+  app.get('/api/pokemons', auth, (req, res) => {
     if(req.query.name) {
 
         const name = req.query.name;
@@ -16,11 +16,11 @@ module.exports = (app) => {
    
         return Pokemon.findAndCountAll({
             where: {
-                name: { //Name correspond au nom dans le model pokemon
-                    [Op.like]: `%${name}%` //Utilisation de l'opérateur like pour chercher les pokémons qui contiennent le nom recherché
+                name: { 
+                    [Op.like]: `%${name}%`
                 }
             },
-            order: ['name'], //Tri par ordre alphabétique
+            order: ['name'], 
             limit : limit
         })
       
