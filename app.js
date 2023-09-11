@@ -28,7 +28,7 @@ require('./src/routes/login')(app);
 
 
 
-app.use(({res}) => { 
+app.use(({res}) => { //middleware pour gérer les erreurs 404
    const message =  'Impossible de trouver la ressource demandée ! Essayez une autre url';
    res.status(404).json({message});
 })

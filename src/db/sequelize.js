@@ -9,11 +9,11 @@ let sequelize;
 
 if (process.env.NODE_ENV === 'production'){
     sequelize = new Sequelize(
-        'q97lpqnhwumoly4u',
-        'cijwxjbmdxl5qapn',
-        'djr99ym7snhzpldb',
+        '',
+        '',
+        '',
         {
-            host: 'eporqep6b4b8ql12.chr7pe7iynqr.eu-west-1.rds.amazonaws.com',
+            host: '',
             port: 3306,         
             dialect: 'mariadb', 
             dialectOptions: {
@@ -21,7 +21,23 @@ if (process.env.NODE_ENV === 'production'){
             },
             logging: true
         }
-        );
+        )
+} else{
+
+    sequelize = new Sequelize(
+        'pokedex', 
+        'root',    
+        'root',    
+        {
+            host: '127.0.0.1',
+            port: 8889,        
+            dialect: 'mariadb',
+            dialectOptions: {
+                timezone: 'Etc/GMT-2', 
+            },
+            logging: false, 
+        }
+);
 }
   
 const Pokemon = PokemonModel(sequelize, DataTypes) 
@@ -29,7 +45,7 @@ const User = UserModel(sequelize, DataTypes);
 
 const initDb = () => {
 
-return sequelize.sync()
+    return sequelize.sync({ force: true }) // force: true permet de recréer les tables à chaque lancement de l'application
         .then(_ => {
             pokemons.map(pokemon => {
             Pokemon.create({
